@@ -1,4 +1,5 @@
 import CustomAvatar from "@/components/custom-avatar";
+import { CustomFilterDropdown } from "@/components/customUI/CustomFilterDropdown";
 import { Text } from "@/components/text";
 import { COMPANIES_LIST_QUERY } from "@/graphql/queries";
 import { currencyNumber } from "@/utilities";
@@ -6,15 +7,16 @@ import { SearchOutlined } from "@ant-design/icons";
 import { CreateButton, DeleteButton, EditButton, FilterDropdown, List, useTable } from "@refinedev/antd"
 import { getDefaultFilter, useGo } from "@refinedev/core"
 import { Input, Space, Table } from "antd";
+import React from "react";
 
 
 
 
-export const CompanyList = () => {
+export const CompanyList = ({children}: React.PropsWithChildren) => {
 
   const go = useGo();
 
-  const { tableProps, filters} = useTable({
+  const { tableProps, filters, searchFormProps} = useTable({
 
     resource:"companies",
     pagination:{
@@ -40,16 +42,64 @@ export const CompanyList = () => {
         }
       ]
     },
+    //  filters:{
+    //   initial:[
+    //     {
+    //       operator:"or", 
+    //       value:[
+    //         {//优先过滤第一层
+    //           field:"name",
+    //           operator:"eq",
+    //           value: undefined
+    //         },
+    //         {//然后过滤第二层
+    //           field:"name",
+    //           operator:"contains",
+    //           value: undefined
+    //         },
+
+    //     ]
+    //     }
+    //   ]
+    // },
     onSearch: (values:{name?:string}) => {
 
       return [
         {
           field: "name",
           operator: "contains",
-          value: values.name || undefined,
+          value: values.name ?? undefined,
         }
       ]
     },
+    // onSearch: (values:{name?:string}) => {
+
+    //   const searchTerm = values.name ?? undefined;
+      
+
+    //   if(!searchTerm){
+    //     return []
+    //   }
+
+    //   return [
+    //     {
+    //      operator: "or",
+    //      value: [
+    //       {
+    //         field: "name",
+    //         operator: "eq",
+    //         value: searchTerm,
+    //       },
+    //       {
+    //         field: "name",
+    //         operator: "contains",
+    //         value: searchTerm,
+    //       },
+    //      ]
+    //     }
+    //   ]
+    // },
+    syncWithLocation: true,
     
     
 
@@ -58,7 +108,7 @@ export const CompanyList = () => {
   //console.log(tableProps);
 
   return (
-    
+    <div>
       <List
         breadcrumb={false}
         headerButtons={() => (
@@ -96,11 +146,18 @@ export const CompanyList = () => {
             filterIcon={<SearchOutlined />}
             filterDropdown={(props)=> (
 
-                <FilterDropdown {...props}>
-                    <Input placeholder="Seach Company..." />
-                </FilterDropdown>
+                <CustomFilterDropdown {...props}>
+                    <Input 
+                       // {...props}
+                        placeholder="Seach Company..."
+                        onPressEnter={()=> props.confirm()}
+                        //value={props.selectedKeys[0]}
+                        //onChange={(e) => props.setSelectedKeys(e.target.value ? [e.target.value] : [])}
+                        
+                    />
+                </CustomFilterDropdown>
             )}
-            render={(value, record) => (
+            render={(_, record) => (
 
                 <Space>
                   <CustomAvatar shape="square" name={record.name} src={record.avatarUrl} />
@@ -117,7 +174,7 @@ export const CompanyList = () => {
             <Table.Column 
               title="Deals Amount"
               //no need dataIndex, 因为数据不在第一层，查看console.log(tableProps)
-              render={(value, company) => (
+              render={(_, company) => (
 
                 <Text>
                   {currencyNumber(company?.dealsAggregate?.[0].sum?.value || 0)}
@@ -145,6 +202,8 @@ export const CompanyList = () => {
         </Table>
 
       </List>
+      {children}
+    </div>
     
   )
 }

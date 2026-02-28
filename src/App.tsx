@@ -16,7 +16,7 @@ import { App as AntdApp } from "antd";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router";
 import { authProvider } from "./providers/auth";
 
-import {Home, ForgotPassword, Login, Register, CompanyList} from "./pages/page"
+import {Home, ForgotPassword, Login, Register, CompanyList, CreateCompany, EditPage} from "./pages/page"
 import Layout from "./components/layout/layout";
 import { resources } from "./config/resources";
 
@@ -62,7 +62,11 @@ function App() {
                     }
                   >
                     <Route index element={<Home />} />
-                    <Route path="/companies" element={<CompanyList />}/>
+                    <Route path="/companies">
+                      <Route index element={<CompanyList />} />
+                      <Route path="new" element={<CreateCompany />} />
+                      <Route path="edit/:id" element={<EditPage />} />
+                    </Route>
                   </Route>
                 </Routes>
                 <RefineKbar />
