@@ -5,6 +5,7 @@ export const Login = () => {
   return (
     <AuthPage
       type="login"
+      title={false}
       formProps={{
         initialValues: authCredentials,
       }}

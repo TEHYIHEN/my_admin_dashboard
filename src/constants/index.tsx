@@ -210,6 +210,48 @@ export const statusOptions: {
   },
 ];
 
+export const statusOptionsTwo: {
+  text: string;
+  value: Contact["status"];
+}[] = [
+  {
+    text: "New",
+    value: "NEW",
+  },
+  {
+    text: "Qualified",
+    value: "QUALIFIED",
+  },
+  {
+    text: "Unqualified",
+    value: "UNQUALIFIED",
+  },
+  {
+    text: "Won",
+    value: "WON",
+  },
+  {
+    text: "Negotiation",
+    value: "NEGOTIATION",
+  },
+  {
+    text: "Lost",
+    value: "LOST",
+  },
+  {
+    text: "Interested",
+    value: "INTERESTED",
+  },
+  {
+    text: "Contacted",
+    value: "CONTACTED",
+  },
+  {
+    text: "Churned",
+    value: "CHURNED",
+  },
+];
+
 export const companySizeOptions: {
   label: string;
   value: CompanySize;

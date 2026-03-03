@@ -19,13 +19,15 @@ import { authProvider } from "./providers/auth";
 import {Home, ForgotPassword, Login, Register, CompanyList, CreateCompany, EditPage} from "./pages/page"
 import Layout from "./components/layout/layout";
 import { resources } from "./config/resources";
+import { CompanyContactsTable } from "./pages/company/contacts-table";
+import { ContactPage } from "./pages/contact/contactMainPage";
 
 
 
 function App() {
   return (
     <BrowserRouter>
-      <GitHubBanner />
+      {/*<GitHubBanner /> */} {/* 关掉这个就没有Github rate */}
       <RefineKbarProvider>
        
           <AntdApp>
@@ -62,10 +64,15 @@ function App() {
                     }
                   >
                     <Route index element={<Home />} />
+
                     <Route path="/companies">
                       <Route index element={<CompanyList />} />
                       <Route path="new" element={<CreateCompany />} />
                       <Route path="edit/:id" element={<EditPage />} />
+                    </Route>
+
+                    <Route path="/contacts">
+                    <Route index element={<ContactPage />}/>
                     </Route>
                   </Route>
                 </Routes>
@@ -73,7 +80,7 @@ function App() {
                 <UnsavedChangesNotifier />
                 <DocumentTitleHandler />
               </Refine>
-              <DevtoolsPanel />
+              <DevtoolsPanel /> {/* 删掉或关掉这个devtools就不见了 */}
             </DevtoolsProvider>
           </AntdApp>
         

@@ -111,6 +111,8 @@ export const CompanyList = ({children}: React.PropsWithChildren) => {
     <div>
       <List
         breadcrumb={false}
+        //这里会自动默认生成Title,从resource中索取,也是App.tsx 里面的resource + resource.tsx
+        //title={false}
         headerButtons={() => (
 
               <CreateButton 
@@ -192,6 +194,7 @@ export const CompanyList = ({children}: React.PropsWithChildren) => {
               render={(value) => (
 
                 <Space>
+                  {/*注意这里， EditButton会自动navigate，自动识别resource， 来自 App.tsx 的resource.tsx，*/}
                   <EditButton hideText size="small" recordItemId={value} />
                   <DeleteButton hideText size="small" recordItemId={value} />
                 </Space>
