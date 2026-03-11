@@ -21,6 +21,8 @@ import Layout from "./components/layout/layout";
 import { resources } from "./config/resources";
 import { CompanyContactsTable } from "./pages/company/contacts-table";
 import { ContactPage } from "./pages/contact/contactMainPage";
+import TaskList from "./pages/task/tasklist";
+
 
 
 
@@ -72,7 +74,11 @@ function App() {
                     </Route>
 
                     <Route path="/contacts">
-                    <Route index element={<ContactPage />}/>
+                      <Route index element={<ContactPage />}/>
+                    </Route>
+
+                    <Route path="/tasks">
+                      <Route index element={<TaskList />} />
                     </Route>
                   </Route>
                 </Routes>

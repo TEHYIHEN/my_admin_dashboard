@@ -1,7 +1,9 @@
-import { ThemedLayout, ThemedTitle } from '@refinedev/antd'
 import React from 'react'
 import Header from './header'
 import { FundProjectionScreenOutlined } from '@ant-design/icons'
+import { ThemedLayout } from '../customUI/customThemedLayout/ThemeLayout'
+import { ThemedTitle } from '../customUI/customThemedLayout/ThemeTitle'
+
 
 const Layout = ({children}: React.PropsWithChildren) => {
   return (

@@ -9,7 +9,6 @@ import { Edit, useForm, useSelect } from '@refinedev/antd'
 import { GetFieldsFromList } from '@refinedev/nestjs-query'
 import { Col, Form, Input, InputNumber, InputNumberProps, Row, Select, Space } from 'antd'
 import React from 'react'
-import { CompanyContactsTable } from './contacts-table'
 
 export const EditPage = () => {
 
@@ -124,7 +123,7 @@ export const EditPage = () => {
             </Edit>
         </Col>
         <Col xs={24} xl={12}>
-            <CompanyContactsTable />
+            
         </Col>
       </Row>
     </div>
