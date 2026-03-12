@@ -106,10 +106,11 @@ const TaskList = () => {
                   </KanbanItem>
 
                 ))}
-            </KanbanColumn>
 
-              
-
+                  {!taskStages.unnasignedStage.length && (
+                    <KanbanAddCardButton onClick={()=> handleAddCard({stageId:"unnasigned"})} />
+                  )}
+            </KanbanColumn>    
         </KanbanBoard>
       </KanbanBoardContainer>
     </>

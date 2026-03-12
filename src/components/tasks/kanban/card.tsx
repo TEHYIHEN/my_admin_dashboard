@@ -1,9 +1,13 @@
+import CustomAvatar from '@/components/custom-avatar';
 import { Text } from '@/components/text';
+import { TextIcon } from '@/components/text-icos';
 import { User } from '@/graphql/schema.types'
-import { DeleteOutlined, EyeOutlined, MoreOutlined } from '@ant-design/icons';
-import { Button, Card, ConfigProvider, Dropdown, theme } from 'antd';
+import { getDateColor } from '@/utilities';
+import { ClockCircleOutlined, DeleteOutlined, EyeOutlined, MoreOutlined } from '@ant-design/icons';
+import { Button, Card, ConfigProvider, Dropdown, Space, Tag, theme, Tooltip } from 'antd';
 import { MenuProps } from 'antd/lib';
-import React, { useMemo } from 'react'
+import dayjs from 'dayjs';
+import React, { memo, useMemo } from 'react'
 
 type ProjectCardProps = {
   id: string,
@@ -50,6 +54,21 @@ const ProjectCard = ({id, title, dueDate, users}: ProjectCardProps) => {
         return items;
     }, []);
 
+    const dueDateOptions = useMemo(() => {
+
+        if(!dueDate) return null;
+
+        const date = dayjs(dueDate);
+        
+        return {
+            color: getDateColor({date: dueDate}) as string,
+            text: date.format("MMM DD")
+        }
+
+    }, [dueDate]);
+
+
+
 
   return (
     // ConfigProvider是一键式可以改变全局的主题(theme),font
@@ -94,7 +113,52 @@ const ProjectCard = ({id, title, dueDate, users}: ProjectCardProps) => {
                 </Dropdown>
             }
         >
+            <div
+                style={{
+                    display:"flex",
+                    flexWrap:"wrap",
+                    alignItems:"center",
+                    gap:"8px"
+                }}
+            >
+                <TextIcon style={{marginRight:"4px"}}/>
+                {dueDateOptions && (
 
+                    <Tag
+                        icon={<ClockCircleOutlined style={{fontSize: "12px"}}/>}
+                        style={{
+                            padding:"0 4px",
+                            marginInlineEnd: "0",
+                            backgroundColor: dueDateOptions.color === "default" ? "transparent" : "unset",
+                        }}
+                        color={dueDateOptions.color}
+                        bordered={dueDateOptions.color !== "default"}
+                    >   
+                        {dueDateOptions.text}
+                    </Tag>
+
+                )}
+                    {!!users?.length && (
+                        <Space
+                            size={4}
+                            wrap
+                            direction='horizontal'
+                            align='center'
+                            style={{
+                                display:"flex",
+                                justifyContent:"flex-end",
+                                marginLeft:"auto",
+                                marginRight: 0,
+                            }}
+                        >
+                            {users.map((user) => (
+                                <Tooltip key={user.id} title={user.name}>
+                                    <CustomAvatar name={user.name} src={user.avatarUrl}/>
+                                </Tooltip>
+                            ))}
+                        </Space>
+                    )}    
+            </div>
         </Card>
 
     </ConfigProvider>
@@ -102,3 +166,16 @@ const ProjectCard = ({id, title, dueDate, users}: ProjectCardProps) => {
 }
 
 export default ProjectCard
+
+export const ProjectCardMemo = React.memo(ProjectCard,(prev, next) => {
+
+    return (
+        
+        prev.id === next.id &&
+        prev.title === next.title &&
+        prev.dueDate === next.dueDate &&
+        prev.users === next.users?.length &&
+        prev.updatedAt === next.updatedAt
+        
+    )
+})
