@@ -90,7 +90,7 @@ const KanbanColumn = ({
                 flex : 1,
                 //当没有drag action，allow container scrolling
                 //当在drag action时，取消scrolling 效果
-                overflowY: active ? "unset" : "scroll",
+                overflowY: active ? "unset" : "auto",
                 border: "2px dashed transparent",
                 borderColor: isOver ? "#00040" : "transparent",
                 borderRadius: "4px"
