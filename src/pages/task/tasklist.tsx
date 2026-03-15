@@ -101,7 +101,7 @@ const TaskList = ({children}: React.PropsWithChildren) => {
 
     if(taskStageId === stagedId) return;
 
-    if(stagedId === "unnassigned") {
+    if(stagedId === "unassigned") {
 
       stagedId = null;
     }
@@ -130,13 +130,13 @@ const TaskList = ({children}: React.PropsWithChildren) => {
       <KanbanBoardContainer>
         <KanbanBoard onDragEnd={handleOnDragEnd}>
             <KanbanColumn
-              id="unnasigned"
+              id="unassigned"
               title={"unassigned"}
               count={taskStages.unnasignedStage.length || 0}
-              onAddClick={() => handleAddCard({stageId:"unnasigned"})}
+              onAddClick={() => handleAddCard({stageId:"unassigned"})}
             >
                 {taskStages.unnasignedStage.map((task)=> (
-                  <KanbanItem key={task.id} id={task.id} data={{...task, stageId:"unnasigned"}}>
+                  <KanbanItem key={task.id} id={task.id} data={{...task, stageId:"unassigned"}}>
                     <ProjectCard 
                       {...task}
                       dueDate={task.dueDate || undefined}
