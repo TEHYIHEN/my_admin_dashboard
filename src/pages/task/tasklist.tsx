@@ -9,11 +9,12 @@ import { TASK_STAGES_QUERY, TASKS_QUERY } from '@/graphql/queries'
 import { TaskStage } from '@/graphql/schema.types'
 import { TasksQuery } from '@/graphql/types'
 import { DragEndEvent } from '@dnd-kit/core'
-import { useList, useUpdate } from '@refinedev/core'
+import { useGo, useList, useNavigation, useUpdate } from '@refinedev/core'
 import { GetFieldsFromList } from '@refinedev/nestjs-query'
 import React from 'react'
 
 const TaskList = ({children}: React.PropsWithChildren) => {
+
 
   const {result:{data:stagesResult}, query:{isLoading: isLoadingStage}} =useList<TaskStage>({
 
@@ -87,8 +88,18 @@ const TaskList = ({children}: React.PropsWithChildren) => {
 
   }, [stagesResult, tasksResult]);
 
+
+  const go = useGo();
   const handleAddCard = (args:{ stageId: string }) => {
 
+    const path = args.stageId === "unassigned"
+      ? "/tasks/new"
+      : `/tasks/new?stageId=${args.stageId}`;
+
+     go({
+      to: path,
+      type:"replace"
+     })
 
   };
 
@@ -146,7 +157,7 @@ const TaskList = ({children}: React.PropsWithChildren) => {
                 ))}
 
                   {!taskStages.unnasignedStage.length && (
-                    <KanbanAddCardButton onClick={()=> handleAddCard({stageId:"unnasigned"})} />
+                    <KanbanAddCardButton onClick={()=> handleAddCard({stageId:"unassigned"})} />
                   )}
             </KanbanColumn>    
 

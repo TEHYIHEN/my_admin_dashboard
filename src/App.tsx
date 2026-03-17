@@ -22,6 +22,8 @@ import { resources } from "./config/resources";
 import { CompanyContactsTable } from "./pages/company/contacts-table";
 import { ContactPage } from "./pages/contact/contactMainPage";
 import TaskList from "./pages/task/tasklist";
+import TaskCreatePage from "./pages/task/taskcreate";
+import TaskEditPage from "./pages/task/taskedit";
 
 
 
@@ -40,7 +42,7 @@ function App() {
                 notificationProvider={useNotificationProvider}
                 routerProvider={routerProvider}
                 authProvider={authProvider}
-                resources={resources}
+                resources={resources} //这里是显示左边option list的途径
                 options={{
                   syncWithLocation: true,
                   warnWhenUnsavedChanges: true,
@@ -65,10 +67,10 @@ function App() {
                             </Authenticated>
                     }
                   >
-                    <Route index element={<Home />} />
+                    <Route index element={<Home />} />  {/* index 用意思是渲染首页要让user看到的 */}
 
                     <Route path="/companies">
-                      <Route index element={<CompanyList />} />
+                      <Route index element={<CompanyList />} />   {/* example: url xxxxx.xxxx/companies 的第一眼看到的页面是<CompanyList /> */}
                       <Route path="new" element={<CreateCompany />} />
                       <Route path="edit/:id" element={<EditPage />} />
                     </Route>
@@ -77,8 +79,17 @@ function App() {
                       <Route index element={<ContactPage />}/>
                     </Route>
 
-                    <Route path="/tasks">
-                      <Route index element={<TaskList />} />
+                    <Route 
+                      path="/tasks" 
+                      element={                 
+                      <TaskList>
+                        <Outlet />
+                      </TaskList>
+                      }
+                    >
+                      <Route path="new" element={<TaskCreatePage />} />
+                      <Route path="edit/:id" element={<TaskEditPage />} />
+
                     </Route>
                   </Route>
                 </Routes>

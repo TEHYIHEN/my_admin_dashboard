@@ -2,12 +2,13 @@ import CustomAvatar from '@/components/custom-avatar';
 import { Text } from '@/components/text';
 import { TextIcon } from '@/components/text-icos';
 import { User } from '@/graphql/schema.types'
-import { getDateColor } from '@/utilities';
+import { getDateColor } from '@/utilities'; 
 import { ClockCircleOutlined, DeleteOutlined, EyeOutlined, MoreOutlined } from '@ant-design/icons';
+import { useDelete, useNavigation } from '@refinedev/core';
 import { Button, Card, ConfigProvider, Dropdown, Space, Tag, theme, Tooltip } from 'antd';
 import { MenuProps } from 'antd/lib';
 import dayjs from 'dayjs';
-import React, { memo, useMemo } from 'react'
+import React, { useMemo } from 'react'
 
 type ProjectCardProps = {
   id: string,
@@ -28,7 +29,8 @@ const ProjectCard = ({id, title, dueDate, users}: ProjectCardProps) => {
     const {token} = theme.useToken();
     //console.log(token);
 
-    const edit = () => {}
+    const {edit} = useNavigation();
+    const {mutate: isDelete} = useDelete();
 
     const dropdownItems = useMemo(() => {
         const items: MenuProps["items"] = [
@@ -37,7 +39,7 @@ const ProjectCard = ({id, title, dueDate, users}: ProjectCardProps) => {
                 key: "1",
                 icon: <EyeOutlined />,
                 onClick: () => {
-                    edit();
+                    edit("tasks", id, "replace");
                 }
             },
             {
@@ -47,6 +49,11 @@ const ProjectCard = ({id, title, dueDate, users}: ProjectCardProps) => {
                 icon: <DeleteOutlined />,
                 onClick: () => {
                     
+                    isDelete({
+                        resource:"tasks",
+                        id,
+                        meta:{operation:"task"}
+                    })
                 }
             }
         ];
@@ -87,12 +94,14 @@ const ProjectCard = ({id, title, dueDate, users}: ProjectCardProps) => {
         <Card
             size='small'
             title={<Text ellipsis={{tooltip: title}}>{title}</Text>}
-            onClick={()=> edit()}
+            onClick={()=> edit("tasks", id, "replace")} 
             extra={
                 <Dropdown
                     trigger={["click"]}
                     menu={{
                         items: dropdownItems,
+                        onPointerDown:(e) => {e.stopPropagation()},
+                        onClick:(e) => {e.domEvent.stopPropagation()}
                     }}
                     placement='bottom'
                     arrow={{pointAtCenter: true}}
